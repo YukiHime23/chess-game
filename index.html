@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Chess game</title>
+
+	<link rel="stylesheet" href="lib/chessboard/css/chessboard-1.0.0.css">
+    <link rel="stylesheet" href="public/style.css">
+</head>
+<body>
+	<div class="contents">
+		<span class="timer">
+			<span class="timer-minutes">00</span>
+			<span>:</span>
+			<span class="timer-seconds">00</span>
+		</span>
+		
+		<div id="board" class="board"></div>
+		
+		<label>Status:</label>
+		<div id="status"></div>
+
+		<button id="reStartBtn">Chơi lại</button>
+		<button id="undo">Di lai</button>
+		<button id="test">Kiem tra</button>
+
+
+		<label>History:</label>
+		<div id="history"></div>
+	</div>
+
+	<script src="lib/chess.js"></script>
+	<script src="lib/jQuery/jquery-3.3.1.min.js"></script>
+	<script src="lib/chessboard/js/chessboard-1.0.0.js"></script>
+	<script src="public/script.js"></script>
+	<script src="public/ai.js"></script>
+</body>
+</html>

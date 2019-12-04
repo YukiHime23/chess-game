@@ -1,0 +1,15 @@
+*{
+	margin: auto;
+	padding: 0;
+}
+.contents{
+    width: 40%;
+    margin: auto;
+    padding: 20px;
+    border-right: red 2px solid;
+    border-left: red 2px solid;
+}
+.board {
+    width: 75%;
+    margin: auto;
+}
