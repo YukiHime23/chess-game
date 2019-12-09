@@ -22,21 +22,22 @@ function onDragStart (source, piece, position, orientation) {
 }
 // di chuyen neu dung luat
 function onDrop (source, target) {
-	// thong tin buoc di
-	var move = game.move({
-		from: source,
-		to: target,
-		promotion: 'q'
-	})
+  
+  // thong tin buoc di
+  var move = game.move({
+  	from: source,
+  	to: target,
+  	promotion: 'q'
+  })
 
-	removeGreySquares()
+  removeGreySquares()
 
-	// di chuyen theo luat
-	if (move === null) return 'snapback'
-	// board.flip()
-
-	renderMoveHistory(game.history())
-	updateStatus()
+  // di chuyen theo luat
+  if (move === null) return 'snapback'
+  game.move(getBestMove())
+  // board.position(game.fen());
+  renderMoveHistory(game.history())
+  updateStatus()
 }
 
 // mau nuoc di duoc phep di
@@ -113,11 +114,11 @@ function updateStatus () {
 // config chess board
 var config = {
 	draggable: true,
-	dropOffBoard: 'snapback',
 	// pieceTheme: 'img/chesspieces/alpha/{piece}.png',
 	moveSpeed: 'slow',
 	snapbackSpeed: 500,
 	snapSpeed: 100,
+
 	showNotation: toaDo,
 	orientation: chonBen,
 	position: 'start',
@@ -151,12 +152,98 @@ $('#test').on('click', function () {
 })
 $('#undo').on('click', function () {
 	game.undo()
+	game.undo()
 	board.position(game.fen())
 	updateStatus()
 	// console.log(board.fen())
 })
-var calculateBestMove =function(game) {
-    //generate all the moves for a given position
-    var newGameMoves = game.ugly_moves();
-    return newGameMoves[Math.floor(Math.random() * newGameMoves.length)];
+
+// ai
+var randomMove = function() {
+  //generate all the moves for a given position
+  var moves = game.moves();
+  console.log(moves)
+  var newMove = moves[Math.floor(Math.random() * moves.length)];
+  return newMove;
 };
+var calculateBestMove = function() {
+  var newGameMoves = game.moves();
+  var bestMove = null;
+  //use any negative large number
+  var bestValue = -9999;
+
+  for(var i = 0; i < newGameMoves.length; i++) {
+      var newGameMove = newGameMoves[i];
+      game.move(newGameMove);
+
+      //take the negative as AI plays as black
+      var squaresValue = -evaluateBoard(game.SQUARES)
+      game.undo();
+      if(squaresValue > bestValue) {
+          bestValue = squaresValue;
+          bestMove = newGameMove
+      }
+  }
+  return bestMove;
+};
+var evaluateBoard = function (squares) {
+  var totalEvaluation = 0;
+  for (var i = 0; i < squares.length; i++) {
+    totalEvaluation = totalEvaluation + getPieceValue(game.get(squares[i]));
+  }
+  return totalEvaluation;
+};
+var getPieceValue = function (piece) {
+  if (piece === null) {
+      return 0;
+  }
+  var getAbsoluteValue = function (piece) {
+      if (piece.type === 'p') { 
+          return 10;
+      } else if (piece.type === 'r') {
+          return 50;
+      } else if (piece.type === 'n') {
+          return 30;
+      } else if (piece.type === 'b') {
+          return 30 ;
+      } else if (piece.type === 'q') {
+          return 90;
+      } else if (piece.type === 'k') {
+          return 900;
+      }
+      throw "Unknown piece type: " + piece.type;
+  };
+
+  var absoluteValue = getAbsoluteValue(piece, piece.color === 'w');
+  return piece.color === 'w' ? absoluteValue : -absoluteValue;
+};
+var minimax = function (depth, game, isMaximisingPlayer) {
+  if (depth === 0) {
+    return -evaluateBoard(game.SQUARES);
+  }
+  var newGameMoves = game.moves();
+  if (isMaximisingPlayer) {
+    var bestMove = -9999;
+    for (var i = 0; i < newGameMoves.length; i++) {
+      game.moves(newGameMoves[i]);
+      bestMove = Math.max(bestMove, minimax(depth - 1, game, !isMaximisingPlayer));
+      game.undo();
+    }
+    return bestMove;
+  } else {
+    var bestMove = 9999;
+    for (var i = 0; i < newGameMoves.length; i++) {
+      game.ugly_move(newGameMoves[i]);
+      bestMove = Math.min(bestMove, minimax(depth - 1, game, !isMaximisingPlayer));
+      game.undo();
+    }
+    return bestMove;
+  }
+}
+var getBestMove = function() {
+  if (game.game_over()) {
+      alert('Game over');
+  }
+  var bestMove = calculateBestMove();
+  return bestMove;
+}
