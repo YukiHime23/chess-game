@@ -17,25 +17,37 @@
 	    </div>
 
 	    <div class="col-sm-4">
-	    	<span class="timer">
-				<span class="timer-minutes">00</span>
+	    	<div class="col-sm-8 infoGame">
+	    		<span class="timer">
+					<span class="timer-minutes">00</span>
 					<span>:</span>
 					<span class="timer-seconds">00</span>
-			</span>
-			
-			<div class="statusInfo">
-				<span>Status:</span>
-				<div id="status"></div>
-			</div>
-			
-			<div class="historyInfo">
-				<span>History:</span>
-				<div id="history"></div>
-			</div>
+				</span>
+				
+				<div class="statusInfo">
+					<span>Status:</span>
+					<div id="status"></div>
+				</div>
+				
+				<div class="historyInfo">
+					<span>History:</span>
+					<table class="table-sm table-striped">
+						<thead>
+							<tr>
+								<th>White</th>
+								<th>Black</th>
+							</tr>
+						</thead>
+						<tbody id="history">
+							
+						</tbody>
+					</table>
+				</div>
 
-			<button id="reStartBtn">Chơi lại</button>
-			<button id="undo">Di lai</button>
-			<button id="test">Kiem tra</button>
+				<button id="reStartBtn">Chơi lại</button>
+				<button id="undo">Di lai</button>
+				<button id="test">Kiem tra</button>
+	    	</div>
 	    </div>
 
 	  </div>

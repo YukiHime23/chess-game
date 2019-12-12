@@ -87,7 +87,7 @@ function onSnapEnd () {
 var renderMoveHistory = function (moves) {
     historyElement.empty();
     for (var i = 0; i < moves.length; i = i + 2) {
-        historyElement.append('<span>' + moves[i] + ' ' + ( moves[i + 1] ? moves[i + 1] : ' ') + '</span><br>')
+        historyElement.append('<tr><td>' + moves[i] + '</td><td>' + ( moves[i + 1] ? moves[i + 1] : ' ') + '</td></tr>')
     }
     historyElement.scrollTop(historyElement[0].scrollHeight);
 };
@@ -162,6 +162,7 @@ $('#undo').on('click', function () {
 	game.undo()
 	board.position(game.fen())
 	updateStatus()
+  $("table.table-sm > tbody > tr:first-child").remove();
 	// console.log(board.fen())
 })
 
