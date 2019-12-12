@@ -8,18 +8,22 @@
     <link rel="stylesheet" href="public/style.css">
 </head>
 <body>
-	<div class="contents">
+	<div class="infoGame">
 		<span class="timer">
 			<span class="timer-minutes">00</span>
 			<span>:</span>
 			<span class="timer-seconds">00</span>
 		</span>
 		
+		<div class="statusInfo">
+			Status: <div id="status"></div>
+		</div>
+		
+	</div>
+	<div class="contents">
+
 		<div id="board" class="board"></div>
 		
-		<label>Status:</label>
-		<div id="status"></div>
-
 		<button id="reStartBtn">Chơi lại</button>
 		<button id="undo">Di lai</button>
 		<button id="test">Kiem tra</button>

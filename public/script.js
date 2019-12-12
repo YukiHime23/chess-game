@@ -1,6 +1,6 @@
 // config
 var chonBen = 'white'
-var toaDo = false
+var toaDo = true
 var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
 // initialization
@@ -34,11 +34,18 @@ function onDrop (source, target) {
 
   // di chuyen theo luat
   if (move === null) return 'snapback'
-  game.move(getBestMove())
-  // board.position(game.fen());
-  renderMoveHistory(game.history())
-  updateStatus()
+  renderMoveHistory(game.history());
+  window.setTimeout(makeBestMove, 250);
 }
+var makeBestMove = function () {
+    var bestMove = getBestMove(game);
+    game.move(bestMove);
+    board.position(game.fen());
+    renderMoveHistory(game.history());
+    if (game.game_over()) {
+        alert('Game over');
+    }
+};
 
 // mau nuoc di duoc phep di
 function removeGreySquares () { $('#board .square-55d63').css('background', '') }
@@ -159,33 +166,113 @@ $('#undo').on('click', function () {
 })
 
 // ai
-var randomMove = function() {
-  //generate all the moves for a given position
-  var moves = game.moves();
-  console.log(moves)
-  var newMove = moves[Math.floor(Math.random() * moves.length)];
-  return newMove;
+var reverseArray = function(array) {
+    return array.slice().reverse();
 };
-var calculateBestMove = function() {
-  var newGameMoves = game.moves();
-  var bestMove = null;
-  //use any negative large number
-  var bestValue = -9999;
 
-  for(var i = 0; i < newGameMoves.length; i++) {
-      var newGameMove = newGameMoves[i];
-      game.move(newGameMove);
+var pawnEvalWhite = [
+    [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+     5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0,
+     1.0,  1.0,  2.0,  3.0,  3.0,  2.0,  1.0,  1.0,
+     0.5,  0.5,  1.0,  2.5,  2.5,  1.0,  0.5,  0.5,
+     0.0,  0.0,  0.0,  2.0,  2.0,  0.0,  0.0,  0.0,
+     0.5, -0.5, -1.0,  0.0,  0.0, -1.0, -0.5,  0.5,
+     0.5,  1.0, 1.0,  -2.0, -2.0,  1.0,  1.0,  0.5,
+     0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
+];
 
-      //take the negative as AI plays as black
-      var squaresValue = -evaluateBoard(game.SQUARES)
-      game.undo();
-      if(squaresValue > bestValue) {
-          bestValue = squaresValue;
-          bestMove = newGameMove
-      }
-  }
-  return bestMove;
-};
+var pawnEvalBlack = reverseArray(pawnEvalWhite);
+
+var knightEval = [
+    [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0,
+     -4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0,
+     -3.0,  0.0,  1.0,  1.5,  1.5,  1.0,  0.0, -3.0,
+     -3.0,  0.5,  1.5,  2.0,  2.0,  1.5,  0.5, -3.0,
+     -3.0,  0.0,  1.5,  2.0,  2.0,  1.5,  0.0, -3.0,
+     -3.0,  0.5,  1.0,  1.5,  1.5,  1.0,  0.5, -3.0,
+     -4.0, -2.0,  0.0,  0.5,  0.5,  0.0, -2.0, -4.0,
+     -5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
+];
+
+var bishopEvalWhite = [
+    [ -2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0,
+      -1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0,
+      -1.0,  0.0,  0.5,  1.0,  1.0,  0.5,  0.0, -1.0,
+      -1.0,  0.5,  0.5,  1.0,  1.0,  0.5,  0.5, -1.0,
+      -1.0,  0.0,  1.0,  1.0,  1.0,  1.0,  0.0, -1.0,
+      -1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0, -1.0,
+      -1.0,  0.5,  0.0,  0.0,  0.0,  0.0,  0.5, -1.0,
+      -2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]
+];
+
+var bishopEvalBlack = reverseArray(bishopEvalWhite);
+
+var rookEvalWhite = [
+    [  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,
+       0.5,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  0.5,
+      -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5,
+      -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5,
+      -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5,
+      -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5,
+      -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5,
+       0.0,   0.0, 0.0,  0.5,  0.5,  0.0,  0.0,  0.0]
+];
+
+var rookEvalBlack = reverseArray(rookEvalWhite);
+
+var evalQueen = [
+    [ -2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0,
+      -1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0,
+      -1.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0,
+      -0.5,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5,
+       0.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5,
+      -1.0,  0.5,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0,
+      -1.0,  0.0,  0.5,  0.0,  0.0,  0.0,  0.0, -1.0,
+      -2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]
+];
+
+var kingEvalWhite = [
+
+    [ -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
+      -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
+      -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
+      -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0,
+      -2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0,
+      -1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0,
+       2.0,  2.0,  0.0,  0.0,  0.0,  0.0,  2.0,  2.0 ,
+       2.0,  3.0,  1.0,  0.0,  0.0,  1.0,  3.0,  2.0 ]
+];
+
+var kingEvalBlack = reverseArray(kingEvalWhite);
+
+// var randomMove = function() {
+//   //generate all the moves for a given position
+//   var moves = game.moves();
+//   console.log(moves)
+//   var newMove = moves[Math.floor(Math.random() * moves.length)];
+//   return newMove;
+// };
+// var calculateBestMove = function() {
+//   var newGameMoves = game.moves();
+//   var bestMove = null;
+//   //use any negative large number
+//   var bestValue = -9999;
+
+//   for(var i = 0; i < newGameMoves.length; i++) {
+//       var newGameMove = newGameMoves[i];
+//       game.move(newGameMove);
+
+//       //take the negative as AI plays as black
+//       var squaresValue = -evaluateBoard(game.SQUARES)
+//       game.undo();
+//       if(squaresValue > bestValue) {
+//           bestValue = squaresValue;
+//           bestMove = newGameMove
+//       }
+//   }
+//   return bestMove;
+// };
+
 var evaluateBoard = function (squares) {
   var totalEvaluation = 0;
   for (var i = 0; i < squares.length; i++) {
@@ -193,30 +280,51 @@ var evaluateBoard = function (squares) {
   }
   return totalEvaluation;
 };
-var getPieceValue = function (piece) {
-  if (piece === null) {
-      return 0;
-  }
-  var getAbsoluteValue = function (piece) {
-      if (piece.type === 'p') { 
-          return 10;
-      } else if (piece.type === 'r') {
-          return 50;
-      } else if (piece.type === 'n') {
-          return 30;
-      } else if (piece.type === 'b') {
-          return 30 ;
-      } else if (piece.type === 'q') {
-          return 90;
-      } else if (piece.type === 'k') {
-          return 900;
-      }
-      throw "Unknown piece type: " + piece.type;
-  };
 
-  var absoluteValue = getAbsoluteValue(piece, piece.color === 'w');
-  return piece.color === 'w' ? absoluteValue : -absoluteValue;
+var getPieceValue = function (piece) {
+    if (piece === null) {
+        return 0;
+    }
+    var getAbsoluteValue = function (piece) {
+        if (piece.type === 'p') {
+            return 10;
+        } else if (piece.type === 'r') {
+            return 50;
+        } else if (piece.type === 'n') {
+            return 30;
+        } else if (piece.type === 'b') {
+            return 30 ;
+        } else if (piece.type === 'q') {
+            return 90;
+        } else if (piece.type === 'k') {
+            return 900;
+        }
+        throw "Unknown piece type: " + piece.type;
+    };
+
+    var absoluteValue = getAbsoluteValue(piece, piece.color === 'w');
+    return piece.color === 'w' ? absoluteValue : -absoluteValue;
 };
+
+var minimaxRoot =function(depth, game, isMaximisingPlayer) {
+
+    var newGameMoves = game.moves();
+    var bestMove = -9999;
+    var bestMoveFound;
+
+    for(var i = 0; i < newGameMoves.length; i++) {
+        var newGameMove = newGameMoves[i];
+        game.move(newGameMove);
+        var value = minimax(depth - 1, game, !isMaximisingPlayer);
+        game.undo();
+        if(value >= bestMove) {
+            bestMove = value;
+            bestMoveFound = newGameMove;
+        }
+    }
+    return bestMoveFound;
+};
+
 var minimax = function (depth, game, isMaximisingPlayer) {
   if (depth === 0) {
     return -evaluateBoard(game.SQUARES);
@@ -225,7 +333,7 @@ var minimax = function (depth, game, isMaximisingPlayer) {
   if (isMaximisingPlayer) {
     var bestMove = -9999;
     for (var i = 0; i < newGameMoves.length; i++) {
-      game.moves(newGameMoves[i]);
+      game.move(newGameMoves[i]);
       bestMove = Math.max(bestMove, minimax(depth - 1, game, !isMaximisingPlayer));
       game.undo();
     }
@@ -233,7 +341,7 @@ var minimax = function (depth, game, isMaximisingPlayer) {
   } else {
     var bestMove = 9999;
     for (var i = 0; i < newGameMoves.length; i++) {
-      game.ugly_move(newGameMoves[i]);
+      game.move(newGameMoves[i]);
       bestMove = Math.min(bestMove, minimax(depth - 1, game, !isMaximisingPlayer));
       game.undo();
     }
@@ -244,6 +352,6 @@ var getBestMove = function() {
   if (game.game_over()) {
       alert('Game over');
   }
-  var bestMove = calculateBestMove();
+  var bestMove = minimaxRoot(2, game, true);
   return bestMove;
 }
