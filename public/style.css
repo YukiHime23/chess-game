@@ -1,8 +1,14 @@
 *{
 	margin: auto;
 	padding: 0;
-	width: 100%;
 }
+body{
+	height: 100%;
+}
+.infoGame{
+	width: 30%;
+}
+
 .contents{
     width: 40%;
     margin: auto;
@@ -12,5 +18,10 @@
 }
 .board {
     width: 75%;
+    padding: 10px;
     margin: auto;
+}
+
+.menuButon{
+	width: 30%;
 }
