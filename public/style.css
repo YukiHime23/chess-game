@@ -30,3 +30,13 @@ body{
 .menuButon{
 	width: 30%;
 }
+
+.historyInfo{
+	height: 300px;
+	overflow-y: scroll;
+}
+.historyInfo table{
+	width: 80%;
+    border-spacing: 0;
+	text-align: center;
+}

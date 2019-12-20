@@ -1,5 +1,5 @@
 // config
-var chonBen = 'white'
+var chonBen = 'black'
 var toaDo = true
 var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
@@ -11,6 +11,14 @@ var $status = $('#status')
 var historyElement = $('#history').empty()
 // function
 
+function AiIsWhite() {
+  if (chonBen === 'black') {
+    if (game.turn() === 'w') {
+      window.setTimeout(makeBestMove, 250)
+    }
+  }
+}
+AiIsWhite();
 function onDragStart (source, piece, position, orientation) {
   // khong cho phep di chuyen quan co neu game ket thuc
   if (game.game_over()) return false
@@ -36,6 +44,7 @@ function onDrop (source, target) {
   if (move === null) return 'snapback'
   renderMoveHistory(game.history());
   window.setTimeout(makeBestMove, 250);
+  updateStatus();
 }
 var makeBestMove = function () {
     var bestMove = minimaxRoot(2, game, true);
@@ -116,6 +125,7 @@ function updateStatus () {
       status += ', ' + moveColor + ' is in check'
     }
   }
+  console.log(status);
   $status.html(status)
 }
 // config chess board
