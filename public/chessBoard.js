@@ -1,5 +1,5 @@
 // config
-var chonBen = 'black'
+var chonBen = 'white'
 var toaDo = true
 var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
@@ -11,14 +11,6 @@ var $status = $('#status')
 var historyElement = $('#history').empty()
 // function
 
-function AiIsWhite() {
-  if (chonBen === 'black') {
-    if (game.turn() === 'w') {
-      window.setTimeout(makeBestMove, 250)
-    }
-  }
-}
-AiIsWhite();
 function onDragStart (source, piece, position, orientation) {
   // khong cho phep di chuyen quan co neu game ket thuc
   if (game.game_over()) return false
@@ -125,7 +117,6 @@ function updateStatus () {
       status += ', ' + moveColor + ' is in check'
     }
   }
-  console.log(status);
   $status.html(status)
 }
 // config chess board
@@ -182,7 +173,7 @@ $('#undo').on('click', function () {
 // ___________________________________________________________________-
 // ___________________________________________________________________-
 // ___________________________________________________________________-
-// setup ai
+// cai dat ai
 var reverseArray = function(array) {
     return array.slice().reverse();
 };
@@ -261,41 +252,6 @@ var kingEvalWhite = [
 ];
 
 var kingEvalBlack = reverseArray(kingEvalWhite);
-
-// var randomMove = function() {
-//   //generate all the moves for a given position
-//   var moves = game.moves();
-//   console.log(moves)
-//   var newMove = moves[Math.floor(Math.random() * moves.length)];
-//   return newMove;
-// };
-// var calculateBestMove = function() {
-//   var newGameMoves = game.moves();
-//   var bestMove = null;
-//   //use any negative large number
-//   var bestValue = -9999;
-
-//   for(var i = 0; i < newGameMoves.length; i++) {
-//       var newGameMove = newGameMoves[i];
-//       game.move(newGameMove);
-
-//       //take the negative as AI plays as black
-//       var squaresValue = -evaluateBoard(game.SQUARES)
-//       game.undo();
-//       if(squaresValue > bestValue) {
-//           bestValue = squaresValue;
-//           bestMove = newGameMove
-//       }
-//   }
-//   return bestMove;
-// };
-// var evaluateBoard = function (squares) {
-//   var totalEvaluation = 0;
-//   for (var i = 0; i < squares.length; i++) {
-//     totalEvaluation = totalEvaluation + getPieceValue(game.get(squares[i]));
-//   }
-//   return totalEvaluation;
-// };
 
 var evaluateBoard = function (board) {
     var totalEvaluation = 0;
