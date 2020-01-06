@@ -31,3 +31,19 @@ $('#reStartBtn').on('click', function () {
 })
 
 window.setInterval(startTimer,1000)
+
+/*----------------------------------
+@ event click
+----------------------------------*/
+$('.btn-start').on('click', function () {
+	window.location.href = "index.html";
+})
+$('.btn-setting').on('click', function () {
+	alert("Cai dat");
+})
+$('.btn-help').on('click', function () {
+	alert('huong dan');
+})
+$('.backHome').on('click', function () {
+	window.location.href = "home.html";
+})

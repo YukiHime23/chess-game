@@ -20,7 +20,7 @@
 }
 .board {
     width: 65%;
-    padding: 10px;
+        padding-top: 25px;
     margin: auto;
 }
 
@@ -36,6 +36,9 @@
 	width: 80%;
     border-spacing: 0;
 	text-align: center;
+}
+.navbar-brand{
+	cursor: default;
 }
 /*--------------------------------
 	stylesheet of home.html
@@ -72,33 +75,17 @@
 .btn{
 	font-weight:bold;
 	font-size:20px;
-	background-color: #F1654C;
-	
-	padding: 10px 50px;
 
+	padding: 10px 50px;
 	margin-top: 15px; 
-}
-.btn-start{
-	color: #fff;
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
-.btn-start:hover{
-	background-color: #16A085;
-}
-.btn-start:focus {
-    box-shadow: 0 0 0 0.2rem rgba(225,83,97,.5);
 }
 .btn-setting, .btn-help{
 	color: #212529;
     background-color: #ffc107;
     border-color: #ffc107;
 }
-.btn-setting:hover, .btn-help:hover{
+.btn-setting:hover, .btn-help:hover, .btn-start:hover{
 	background-color: #16A085;
-}
-.btn-setting:focus, .btn-help:focus{
-   box-shadow: 0 0 0 0.2rem rgba(222,170,12,.5);
 }
 .btnGroup{
 	padding-top: 15px; 
