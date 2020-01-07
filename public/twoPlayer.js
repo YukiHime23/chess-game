@@ -75,8 +75,12 @@ var updateStatus = function(game) {
   var status = ''
 
   var moveColor = 'White'
+  $status.addClass("whiteTurn")
+  $status.removeClass("blackTurn")
   if (game.turn() === 'b') {
     moveColor = 'Black'
+    $status.removeClass("whiteTurn")
+    $status.addClass("blackTurn")
   }
 
   // checkmate - chieu tuong

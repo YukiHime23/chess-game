@@ -14,6 +14,11 @@ var blackSquareGrey = '#696969'
 var blackTurnOne = {
   e4:["b5","Na6","c5","g6","g5","b6","Nc6","a6","d6","Nf6"]
 }
+var PircDef = ["d6","Nf6"]
+var franceDef=["e6","d5"]
+var slavDef=["d5","c5"]
+var KingDef=["Nf6","g6"]
+
 var blackDef = {
   e4:[
     {sicilianDef:[
@@ -43,6 +48,11 @@ var blackDef = {
     {slavDef:[
       {w:"d4",b:"d5"},
       {w:"c4",b:"c5"},
+      ]
+    },
+    {KingDef:[
+      {w:"d4",b:"Nf6"},
+      {w:"c4",b:"g6"},
       ]
     },
   ], 
@@ -96,7 +106,7 @@ function onDrop (source, target) {
   // di chuyen theo luat
   if (move === null) return 'snapback'
   mod.renderMoveHistory(game.history());
-  window.setTimeout(makeBestMove,250);
+  window.setTimeout(movePiece,250);
   mod.updateStatus(game);
 }
 // mau nuoc di duoc phep di
@@ -171,7 +181,7 @@ var pawnEvalWhite = [
     [0.5, -0.5, -1.0,  0.0,  0.0, -1.0, -0.5,  0.5],
     [0.5,  1.0, 1.0,  -2.0, -2.0,  1.0,  1.0,  0.5],
     [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
-];;
+];
 
 var pawnEvalBlack = reverseArray(pawnEvalWhite);
 
@@ -237,8 +247,15 @@ var kingEvalWhite = [
 
 var kingEvalBlack = reverseArray(kingEvalWhite);
 
+var movePiece = function() {
+  if (game.history().length<=4) {
+    firstMove()
+  } else {
+    makeBestMove()
+  }
+}
 var makeBestMove = function () {
-  if (mod.countPiece(game.board())<=5) {
+  if (mod.countPiece(game.board())<=6) {
     l = level + 1
   }else{
     l = level
@@ -248,9 +265,45 @@ var makeBestMove = function () {
   board.position(game.fen());
   mod.renderMoveHistory(game.history());
   if (game.game_over()) {
-      alert('Game over'); // _______________________________________
+      alert('Game over');
   }
 };
+
+var firstMove = function() {
+  var his = game.history()
+  switch(his[0]){
+    case 'e4':
+      if (his.length == 1) {
+        game.move(PircDef[0])
+
+        board.position(game.fen());
+        mod.renderMoveHistory(game.history());
+      }
+      if (his.length == 3) {
+        game.move(PircDef[1])
+
+        board.position(game.fen());
+        mod.renderMoveHistory(game.history());
+      }
+      break;
+    case 'd4':
+      if (his.length == 1) {
+        game.move(KingDef[0])
+
+        board.position(game.fen());
+        mod.renderMoveHistory(game.history());
+      }
+      if (his.length == 3) {
+        game.move(KingDef[1])
+
+        board.position(game.fen());
+        mod.renderMoveHistory(game.history());
+      }
+      break;
+    default:
+      makeBestMove()
+  }
+} 
 
 var evaluateBoard = function (board) {
     var totalEvaluation = 0;

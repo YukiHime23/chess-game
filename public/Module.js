@@ -4,8 +4,12 @@ function Module() {
     var status = ''
 
     var moveColor = 'White'
+    $status.addClass("whiteTurn")
+    $status.removeClass("blackTurn")
     if (game.turn() === 'b') {
       moveColor = 'Black'
+      $status.removeClass("whiteTurn")
+      $status.addClass("blackTurn")
     }
 
     // checkmate - chieu tuong
@@ -55,7 +59,7 @@ function Module() {
          tmp = params[i].split('=');
          data[tmp[0]] = tmp[1];
     }
-    
+
     return parseInt(data.lv)
   }
 }

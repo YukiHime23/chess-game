@@ -28,7 +28,7 @@
 			    <div class="btnGroup d-flex flex-column">
 			    	<input class="btn btn-danger btn-start" type="button" value="BẮT ĐẦU" data-toggle="modal" data-target="#player" />
 			    	<input class="btn btn-warning btn-setting" type="button" value="THIẾT LẬP" data-toggle="modal" data-target="#setting" />
-			    	<input class="btn btn-warning btn-help" type="button" value="LUẬT CHƠI" />
+			    	<input class="btn btn-warning btn-help" type="button" value="LUẬT CHƠI" data-toggle="modal" data-target="#huongdan" />
 			    </div>
 		    </div>
     	</div>
@@ -82,6 +82,40 @@
 					<button type="button" class="btn btn-success" data-dismiss="modal" id="btnStart">Thách đấu Ai</button>
 					<button type="button" class="btn btn-danger" data-dismiss="modal"  id="btnSolo">Solo bạn bè</button>
 				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="huongdan">
+		<div class="modal-dialog modal-dialog-centered modal-dialog modal-lg">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Hướng dẫn</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				
+                 <!-- Modal body -->
+				<div>
+					<p>- Hai đối thủ sẽ lựa chọn quân màu nào cho mình. Khi đã dàn bàn cờ xong, hai bên tiến hành dịch chuyển các quân cờ theo lượt đi của mình.</p>
+					<p>- Mục tiêu của hai bên đối thủ là tấn công vua của đối phương, khiến vua không thể di chuyển tới bước nào được hay còn gọi là chiếu vua. Bên nào chiếu được vua là bên đó thắng.Nếu ván cờ đánh mà không có bên nào chiếu được thì là ván cờ hòa</p>
+					<p>- Khi quân cờ di chuyển tới một ô khác có quân đang đứng nếu khác màu thì được ăn quân đó. Nhưng nếu cùng màu thì là sai và phải di chuyển chỗ khác</p>
+					<p>- Cách di chuyển và bắt quân của từng quân cờ trong cờ vua :</p>
+					<p>+ Vua: Mỗi lượt đi chỉ nhảy 1 ô, được phép đi ngang , dọc, chéo</p>
+					<p>+ Hậu: Có thể coi đây là quân rất mạnh trong bàn cờ vì nó được phép di chuyển nhiều ô trên hàng ngang, hàng dọc, hàng chéo.</p>	
+					<p>+ Xe: được phép di chuyển nhiều ô theo đường cột dọc hoặc hàng ngang</p>	
+					<p>+ Tượng: Có thể di chuyển chéo nhiều ô mà nó đang đứng</p>
+                    <p>+ Mã: Di chuyển đường chéo trong vòng 6 ô chữ nhật tính từ khoảng cách nó đứng, không có quân nào thành rào cản của nó.</p>	
+					<p>+ Tốt: Mỗi bên là 8 quân tốt, nước đi ban đầu có thể nhảy 2 ô một lúc, nhưng những lần đi sau chỉ được đi 1 ô. Tốt ăn theo đường chéo từ phía trước mặt, không ăn được khi nó đứng cao hơn quân định ăn. Khi tốt chưa phong cấp thì không được đi lùi và ăn lùi.</p>	
+				</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success" data-dismiss="modal" id="submitSetting">OK</button>
+					
+				</div>
+
 			</div>
 		</div>
 	</div>

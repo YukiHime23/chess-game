@@ -48,15 +48,15 @@ $('#btnStart').on('click', function () {
 
  	window.location.href = url;
 })
+
 $('#btnSolo').on('click', function () {
  	window.location.href = "solo.html";
 })
-$('#submitSetting').on('click', function () {
 
+$('#submitSetting').on('click', function () {
+	
 })
-$('.btn-help').on('click', function () {
-  alert('huong dan');
-})
+
 $('.backHome').on('click', function () {
   window.location.href = "home.html";
 

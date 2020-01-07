@@ -9,6 +9,8 @@
 .infoGame{
 	background-color: white;
 	border: red 2px solid;
+	padding: 10px;
+	text-align: center;
 }
 
 .contents{
@@ -42,6 +44,18 @@
 }
 .timer span{
 	font-family: 'Carter One';
+}
+#status{
+	padding: 5px;
+	border: black 1px solid;
+}
+.whiteTurn{
+	background: black;
+	color: white;
+}
+.blackTurn{
+	background: white;
+	color: black;
 }
 /*--------------------------------
 	stylesheet of home.html
