@@ -26,7 +26,7 @@
 		    	<div class="titleGame">Magic Chess</div>
 		    	<img class="logoGame" src="public/icon/Icon_.png" width="217" height="218" />
 			    <div class="btnGroup d-flex flex-column">
-			    	<input class="btn btn-danger btn-start" type="submit" value="BẮT ĐẦU" />
+			    	<input class="btn btn-danger btn-start" type="button" value="BẮT ĐẦU" data-toggle="modal" data-target="#player" />
 			    	<input class="btn btn-warning btn-setting" type="button" value="THIẾT LẬP" data-toggle="modal" data-target="#setting" />
 			    	<input class="btn btn-warning btn-help" type="button" value="LUẬT CHƠI" />
 			    </div>
@@ -71,6 +71,17 @@
 					<button type="cancel" class="btn btn-danger" data-dismiss="modal">Hủy</button>
 				</div>
 
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="player">
+		<div class="modal-dialog modal-dialog-centered modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<button type="button" class="btn btn-success" data-dismiss="modal" id="btnStart">Thách đấu Ai</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal"  id="btnSolo">Solo bạn bè</button>
+				</div>
 			</div>
 		</div>
 	</div>

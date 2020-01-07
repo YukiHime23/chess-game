@@ -35,7 +35,7 @@ window.setInterval(startTimer,1000)
 /*----------------------------------
 @ event click
 ----------------------------------*/
-$('.btn-start').on('click', function () {
+$('#btnStart').on('click', function () {
  	let level = 0;
 	if (document.getElementById('easy').checked) {
 		level = document.getElementById('easy').value
@@ -45,8 +45,11 @@ $('.btn-start').on('click', function () {
 		level = document.getElementById('hard').value
 	}
 	url = "index.html?lv="+level;
-	
+
  	window.location.href = url;
+})
+$('#btnSolo').on('click', function () {
+ 	window.location.href = "solo.html";
 })
 $('#submitSetting').on('click', function () {
 
