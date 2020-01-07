@@ -1,3 +1,7 @@
+/*-----------------------------------
+! vẽ bàn cờ
+------------------------------------*/
+
 // initialization
 var board = null
 var game = new Chess()

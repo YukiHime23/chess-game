@@ -1,6 +1,6 @@
-// **
-// time step
-// **
+/*----------------------------
+@ bọ đếm thời gian
+-----------------------------*/
 var gameTimer = null
 var sec=0
 var min=0
