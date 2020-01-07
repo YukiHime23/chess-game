@@ -40,6 +40,9 @@
 .navbar-brand{
 	cursor: default;
 }
+.timer span{
+	font-family: 'Carter One';
+}
 /*--------------------------------
 	stylesheet of home.html
 --------------------------------*/

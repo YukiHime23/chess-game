@@ -1,16 +1,73 @@
-// config
+// initialization
+var board = null
+var game = new Chess()
+var mod = new Module();
+ // config
 var chonBen = 'white'
 var toaDo = true
 var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
-// initialization
-var board = null
-var game = new Chess()
+var blackTurnOne = {
+  e4:["b5","Na6","c5","g6","g5","b6","Nc6","a6","d6","Nf6"]
+}
+var blackDef = {
+  e4:[
+    {sicilianDef:[
+      {w:"e4",b:"c5"}
+      ]
+    },
+    {CaroKannDef:[
+      {w:"e4",b:"c6"}
+      ]
+    },
+    {AlekhineDef:[
+      {w:"e4",b:"Nf6"}
+      ]
+    },
+    {franceDef:[
+      {w:"e4",b:"e6"},
+      {w:"d4",b:"d5"},
+      ]
+    },
+    {PircDef:[
+      {w:"e4",b:"d6"},
+      {w:"d4",b:"Nf6"},
+      ]
+    }
+  ],
+  d4:[
+    {slavDef:[
+      {w:"d4",b:"d5"},
+      {w:"c4",b:"c5"},
+      ]
+    },
+  ], 
+}
+var whiteAtk = {
+  e4:[
+    {italia:[
+      {w:"e4",b:"e5"},
+      {w:"Nf3",b:"Nc6"},
+      {w:"Bc4"},
+      ]
+    },
+    {ruyLoper:[
+      {w:"e4",b:"e5"},
+      {w:"Nf3",b:"Nc6"},
+      {w:"Bc5"}
+      ]
+    },
+  ]
+}
+var trapMove = ["e4 e5","Nf3 Nc6","Bb5 a6","Ba4 d6","d4 b5","Bb3 Nxd4"]
 // reference
 var $status = $('#status')
 var historyElement = $('#history').empty()
-// function
+var level = mod.getLevel()
 
+/*---------------------------------
+@ Ve ban co
+---------------------------------*/
 function onDragStart (source, piece, position, orientation) {
   // khong cho phep di chuyen quan co neu game ket thuc
   if (game.game_over()) return false
@@ -34,20 +91,10 @@ function onDrop (source, target) {
 
   // di chuyen theo luat
   if (move === null) return 'snapback'
-  renderMoveHistory(game.history());
-  window.setTimeout(makeBestMove, 250);
-  updateStatus();
+  mod.renderMoveHistory(game.history());
+  window.setTimeout(makeBestMove,250);
+  mod.updateStatus(game);
 }
-var makeBestMove = function () {
-    var bestMove = minimaxRoot(2, game, true);
-    game.move(bestMove);
-    board.position(game.fen());
-    renderMoveHistory(game.history());
-    if (game.game_over()) {
-        alert('Game over'); // _______________________________________
-    }
-};
-
 // mau nuoc di duoc phep di
 function removeGreySquares () { $('#board .square-55d63').css('background', '') }
 function greySquare (square) {
@@ -79,45 +126,9 @@ function onMouseoverSquare (square, piece) {
   }
 }
 function onMouseoutSquare (square, piece) {  removeGreySquares() }
-
 // cap nhap lai vi tri tren ban co sau khi di chuyen quan co
 function onSnapEnd () {
   board.position(game.fen())
-}
-// lich su buoc di
-var renderMoveHistory = function (moves) {
-    historyElement.empty();
-    for (var i = 0; i < moves.length; i = i + 2) {
-        historyElement.append('<tr><td>' + moves[i] + '</td><td>' + ( moves[i + 1] ? moves[i + 1] : ' ') + '</td></tr>')
-    }
-    historyElement.scrollTop(historyElement[0].scrollHeight);
-};
-// Trang thai, thong tin cua van co
-function updateStatus () {
-  var status = ''
-
-  var moveColor = 'White'
-  if (game.turn() === 'b') {
-    moveColor = 'Black'
-  }
-
-  // checkmate - chieu tuong
-  if (game.in_checkmate()) {
-    status = 'Game over, ' + moveColor + ' is in checkmate.'
-  }
-  // draw - het nuoc co
-  else if (game.in_draw()) {
-    status = 'Game over, drawn position'
-  }
-  // van co dang dien ra
-  else {
-    status = moveColor + ' to move'
-    // check?
-    if (game.in_check()) {
-      status += ', ' + moveColor + ' is in check'
-    }
-  }
-  $status.html(status)
 }
 // config chess board
 var config = {
@@ -137,43 +148,12 @@ var config = {
 	onMouseoverSquare: onMouseoverSquare,
 }
 board = Chessboard('board', config)
-
-updateStatus()
-
+mod.updateStatus(game)
 $(window).resize(board.resize)
-// event 
 
-$('#reStartBtn').on('click', function () {
-	historyElement.empty()
-	game.reset()
-	board.position(game.fen())
-	updateStatus()
-})
-$('#test').on('click', function () {
-	var draw = '4k3/4P3/4K3/8/8/8/8/8 b - - 0 78'
-	var check = 'rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3'
-	var test1 = 'rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR b KQkq f3 0 2'
-	var test2 = '4r3/8/2p2PPk/1p6/pP2p1R1/P1B5/2P2K2/3r4 w - - 1 45'
-	game.load(test2)
-	board.position(game.fen())
-	updateStatus()
-	// console.log(board.fen())
-})
-$('#undo').on('click', function () {
-	game.undo()
-	game.undo()
-	board.position(game.fen())
-	updateStatus()
-  $("table.table-sm > tbody > tr:first-child").remove();
-	// console.log(board.fen())
-})
-// ___________________________________________________________________-
-// ___________________________________________________________________-
-// ___________________________________________________________________-
-// ___________________________________________________________________-
-// ___________________________________________________________________-
-// ___________________________________________________________________-
-// cai dat ai
+/*------------------------------------
+@ Cai dat ai
+------------------------------------*/
 var reverseArray = function(array) {
     return array.slice().reverse();
 };
@@ -252,6 +232,21 @@ var kingEvalWhite = [
 ];
 
 var kingEvalBlack = reverseArray(kingEvalWhite);
+
+var makeBestMove = function () {
+  if (mod.countPiece(game.board())<=5) {
+    l = level + 1
+  }else{
+    l = level
+  }
+  var bestMove = minimaxRoot(l, game, true);
+  game.move(bestMove);
+  board.position(game.fen());
+  mod.renderMoveHistory(game.history());
+  if (game.game_over()) {
+      alert('Game over'); // _______________________________________
+  }
+};
 
 var evaluateBoard = function (board) {
     var totalEvaluation = 0;
