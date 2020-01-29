@@ -1,4 +1,5 @@
 function Module() {
+  
   // Trang thai, thong tin cua van co
   this.updateStatus = function(game) {
     var status = ''
@@ -6,6 +7,7 @@ function Module() {
     var moveColor = 'White'
     $status.addClass("whiteTurn")
     $status.removeClass("blackTurn")
+
     if (game.turn() === 'b') {
       moveColor = 'Black'
       $status.removeClass("whiteTurn")
@@ -30,6 +32,7 @@ function Module() {
     }
     $status.html(status)
   }
+
   // lich su buoc di
   this.renderMoveHistory = function (moves) {
       historyElement.empty();
@@ -39,17 +42,6 @@ function Module() {
       historyElement.scrollTop(historyElement[0].scrollHeight);
   };
 
-  this.countPiece = function(board) {
-    var c = 0
-    for (var i = 0; i < 8; i++) {
-      for (var j = 0; j < 8; j++) {
-        if (board[i][j] !== null && board[i][j].color == 'b') {
-          c++
-        }
-      }
-    }
-    return c 
-  }
 
   this.getLevel = function() {
     var url = document.location.href,
@@ -61,5 +53,17 @@ function Module() {
     }
 
     return parseInt(data.lv)
+  }
+  
+  this.countPiece = function(board) {
+    var c = 0
+    for (var i = 0; i < 8; i++) {
+      for (var j = 0; j < 8; j++) {
+        if (board[i][j] !== null && board[i][j].color == 'b') {
+          c++
+        }
+      }
+    }
+    return c 
   }
 }

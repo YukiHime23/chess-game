@@ -11,6 +11,7 @@ var chonBen = 'white'
 var toaDo = true
 var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
+//____________________________________________
 var blackTurnOne = {
   e4:["b5","Na6","c5","g6","g5","b6","Nc6","a6","d6","Nf6"]
 }
@@ -77,6 +78,7 @@ var trapMove = ["e4 e5","Nf3 Nc6","Bb5 a6","Ba4 d6","d4 b5","Bb3 Nxd4"]
 // reference
 var $status = $('#status')
 var historyElement = $('#history').empty()
+
 var level = mod.getLevel()
 
 /*---------------------------------
@@ -110,7 +112,10 @@ function onDrop (source, target) {
   mod.updateStatus(game);
 }
 // mau nuoc di duoc phep di
-function removeGreySquares () { $('#board .square-55d63').css('background', '') }
+function removeGreySquares () { 
+  $('#board .square-55d63').css('background', '') 
+}
+
 function greySquare (square) {
   var $square = $('#board .square-' + square)
 
@@ -121,6 +126,7 @@ function greySquare (square) {
 
   $square.css('background', background)
 }
+
 function onMouseoverSquare (square, piece) {
   // get list of possible moves for this square
   var moves = game.moves({
@@ -154,13 +160,15 @@ var config = {
 
 	showNotation: toaDo,
 	orientation: chonBen,
-	position: 'start',
 	onDragStart: onDragStart,
 	onDrop: onDrop,
 	onSnapEnd: onSnapEnd,
 	onMouseoutSquare: onMouseoutSquare,
 	onMouseoverSquare: onMouseoverSquare,
+	
+  position: '`start`',
 }
+
 board = Chessboard('board', config)
 mod.updateStatus(game)
 $(window).resize(board.resize)
